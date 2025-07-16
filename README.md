@@ -20,8 +20,7 @@ To identify key sales trends, regional performance, customer behavior, and produ
 
 ## 📈 Dashboard Preview
 
-![Sales Dashboard](https://github.com/antima0401/sales_insights_powerbi_dashboard/blob/main/documents/dashboard_screenshot.png?raw=true)
-
+![Sales Dashboard](https://github.com/antima0401/sales-insights-powerbi-dashboard/blob/main/Sales_Insights_PowerBI_Dashboard.png)
 
 ## 📊 Key Business Insights
 
