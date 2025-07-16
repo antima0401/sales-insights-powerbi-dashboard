@@ -1,61 +1,58 @@
-# 📊 Sales Insights Dashboard using SQL + Power BI
+## Sales Insights Data Analysis Project
 
-This project delivers a powerful end-to-end **Sales Insights Dashboard** using SQL for data cleaning and querying, and Power BI for data visualization. The analysis uncovers patterns across markets, products, and customers—enabling data-driven business decisions.
+### Instructions to setup mysql on your local computer
 
+1. Follow step in this video to install mysql on your local computer
+https://www.youtube.com/watch?v=WuBcTJnIuzo
 
-## 🎯 Project Objective
+1. SQL database dump is in db_dump.sql file above. Download `db_dump.sql` file to your local computer and import it as per instructions given in the tutorial video
 
-To identify key sales trends, regional performance, customer behavior, and product-level revenue contributors by:
-- Cleaning and transforming raw sales data using SQL
-- Creating interactive visualizations in Power BI
-- Generating actionable business insights
+### Data Analysis Using SQL
 
+1. Show all customer records
 
-## 🛠️ Tools & Technologies
+    `SELECT * FROM customers;`
 
-- SQL – For data cleaning, transformation, and querying
-- Power BI – For visual dashboard creation and trend analysis
-- Excel – For initial data formatting and CSV handling
+1. Show total number of customers
 
+    `SELECT count(*) FROM customers;`
 
-## 📈 Dashboard Preview
+1. Show transactions for Chennai market (market code for chennai is Mark001
 
-![Sales Dashboard](https://github.com/antima0401/sales-insights-powerbi-dashboard/blob/main/Sales_Insights_PowerBI_Dashboard.png)
+    `SELECT * FROM transactions where market_code='Mark001';`
 
-## 📊 Key Business Insights
+1. Show distrinct product codes that were sold in chennai
 
-- 💰 Total Revenue: ₹987M | Total Sales: 2M units
-- 🏙️ Top Performing Market: Delhi NCR dominates both sales and revenue
-- 📦 Best-Selling Products: `Prod040` and `Prod159` lead in contribution
-- ⏳ Trend: Revenue peaked in early 2018 and declined by 2020—indicating seasonal or macroeconomic influence
-- 🛍️ Top Customers: Electrosalara Stores and Premium Stores are top contributors to revenue
+    `SELECT distinct product_code FROM transactions where market_code='Mark001';`
 
+1. Show transactions where currency is US dollars
 
-## 🧩 Dashboard Features
+    `SELECT * from transactions where currency="USD"`
 
-- 🔄 Filter by **Year (2017–2020)** and **Month**
-- 📊 Visuals include:
-  - Top 5 customers
-  - Revenue by market
-  - Sales by market
-  - Product-wise revenue
-  - Monthly revenue trend
-- 🧠 Drill-down capability to explore trends at a granular level
+1. Show transactions in 2020 join by date table
 
+    `SELECT transactions.*, date.* FROM transactions INNER JOIN date ON transactions.order_date=date.date where date.year=2020;`
 
-## 🛠️ How to Reproduce This Project
+1. Show total revenue in year 2020,
 
-1. Import `raw_sales_data.csv` into a SQL environment (MySQL, PostgreSQL, etc.)
-2. Run the queries in `sql_queries/data_cleaning.sql` to clean and structure the data
-3. Export the result as `cleaned_sales_data.csv`
-4. Load the cleaned data into Power BI using the `.pbix` file
-5. Explore filters, visuals, and insights
+    `SELECT SUM(transactions.sales_amount) FROM transactions INNER JOIN date ON transactions.order_date=date.date where date.year=2020 and transactions.currency="INR\r" or transactions.currency="USD\r";`
+	
+1. Show total revenue in year 2020, January Month,
+
+    `SELECT SUM(transactions.sales_amount) FROM transactions INNER JOIN date ON transactions.order_date=date.date where date.year=2020 and and date.month_name="January" and (transactions.currency="INR\r" or transactions.currency="USD\r");`
+
+1. Show total revenue in year 2020 in Chennai
+
+    `SELECT SUM(transactions.sales_amount) FROM transactions INNER JOIN date ON transactions.order_date=date.date where date.year=2020
+and transactions.market_code="Mark001";`
 
 
-## 💼 Business Value
+Data Analysis Using Power BI
+============================
 
-This dashboard helps:
-- Identify revenue-driving products and customers
-- Detect underperforming markets
-- Support inventory and marketing planning
-- Monitor revenue over time for better forecasting
+1. Formula to create norm_amount column
+
+`= Table.AddColumn(#"Filtered Rows", "norm_amount", each if [currency] = "USD" or [currency] ="USD#(cr)" then [sales_amount]*75 else [sales_amount], type any)`
+
+
+
